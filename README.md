@@ -14,18 +14,30 @@ runs usnig machine learning algorithms.
 # Crops
 
 ALF = Alfalfa = Luzerne
+
 COC = Cocks Grass = Knaulgras 
+
 LUP = Lupin = Lupine
+
 PEA = Pea = Erbse
+
 POT = Potato = Kartoffel
+
 SMA = Silo Maize = Silomais
+
 TRI = Triticale = Triticale
+
 WBAR = Winter Barley = Wintergerste
+
 WRP = Winter Rape = Winterraps
+
 WRY = Winter Rye = Winterroggen
+
 WWH = Winter Wheat = Winterweizen
 
 # Acknowledgment
 
 We want to thanks Dr. Bernd Zbell who has collected the data and allowed us
 to use it. This project is supported by the ZALF "http://www.zalf.de" . 
+The software is based on Python and uses the packages "sklearn", "numpy",
+"matplotlib" and "pandas" which should be installed.
