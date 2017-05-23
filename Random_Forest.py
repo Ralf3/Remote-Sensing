@@ -16,9 +16,6 @@ the precision, the recall, and the score.
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import tree
-import matplotlib.pyplot as plt
-import sys  
-sys.path.append('/datadisk/Remote-Sensing')  # adapt this!
 import gen_sample_all as gs
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
@@ -39,7 +36,7 @@ def rf(t):
     # spilt the dataset into training data and test data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
     # random forest classifier
-    # adapt the parameters to investigate in the behav 
+    # adapt the parameters to investigate in the behavior 
     clf1=RandomForestClassifier(n_estimators=50,
                                 min_samples_split=2,
                                 random_state=2,

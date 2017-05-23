@@ -9,7 +9,9 @@ This data set will be used to generate different collections of training data
 the training data for machine learning examples. The wavelength are restricted
 to the wavelength of the satellite "Sentinel2" but can be adapted if necessary. 
 The user can select a sampling date from a list and use this data for training
-runs usnig machine learning algorithms. 
+runs using machine learning algorithms. This example was the result of a
+training course for Batu (Batunacun). She developed parts of the python code and
+will add new code in the future.
 
 # Crops
 

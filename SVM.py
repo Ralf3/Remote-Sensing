@@ -7,26 +7,25 @@ Created on Mon May  8 09:26:06 2017
 """
 
 """
-This program implements a Adaboost algorithm for classification.
-Adaboost uses a regression tree as basis algorithm.
+This program implements a Support Vector Machine (SVM) for classification.
 To change the n_estimators will change the score, please try it.
 The programm prints the confusion matrix and
 the precision, the recall and the score.
 """
 
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.model_selection import train_test_split
-from sklearn import tree
-import gen_sample_all as gs
-from sklearn.tree import DecisionTreeClassifier 
+# load libaray
 from sklearn.metrics import confusion_matrix
+import numpy as np
 from sklearn.metrics import classification_report
 from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import accuracy_score
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn import svm
+import matplotlib.pyplot as plt
+import gen_sample_all as gs
 
-def ada(t):
+def svm1(t):
     """
     uses t as an index to the list of dates and
     calculates:
@@ -37,13 +36,10 @@ def ada(t):
     X,y=gs.gen_data(t)
     # spilt the dataset into training data and test data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
-    # adaboost classifier based on decision tree
-    # adpat the parameters max_depth and n_estimators please
-    clf = AdaBoostClassifier(
-        DecisionTreeClassifier(max_depth=4),n_estimators=50)
-    clf.fit(X_train,y_train)
-    y_pred=clf.predict(X_test)
-    
+    # define a SVM with the parameters C and gamma and
+    # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
+    classifier = svm.SVC(kernel='rbf', C=1000,gamma=1.0)
+    y_pred = classifier.fit(X_train, y_train).predict(X_test)
     # compare from score, classification report,cohen kappa, confusion matrix
     # calculate accuracy_score 
     score=accuracy_score(y_test, y_pred, normalize=False)
@@ -58,7 +54,7 @@ def ada(t):
     # calculate confusion_matrix we use a model with 5 classes!
     cnf_matrix = confusion_matrix(y_test, y_pred,labels=[0,1,2,3,4])
     return report, cnf_matrix
-    
+
 def print_report(report,cnf_matrix):
     """ 
     prints the score, the report,the kappa and the matrix
@@ -72,8 +68,7 @@ def print_report(report,cnf_matrix):
     print(cnf_matrix)
 
 def main():
-    report,cnf_matrix=ada(2) # change the selected sample data
+    report,cnf_matrix=svm1(2) # change the selected sample data
     print_report(report,cnf_matrix)
 
 main()
-    
