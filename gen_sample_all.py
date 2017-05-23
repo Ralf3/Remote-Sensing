@@ -18,7 +18,7 @@ class zbell(object):
         Please adapt the path according your needs!
     """
     def __init__(self):
-        self.path='/datadisk/zbell/'
+        self.path='./'
         self.files={'ALF':'2002_HYP2_MCA12_4501050_SUPER_ALF.xls',
                     'TRI':'2002_HYP2_MCA12_4501050_SUPER_TRI.xls',
                     'COC':'2002_HYP2_MCA12_4501050_SUPER_COC.xls',
