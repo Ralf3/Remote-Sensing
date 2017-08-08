@@ -20,9 +20,13 @@ import gen_sample_all as gs
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.model_selection import cross_val_predict
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import numpy as np
 
 def rf(t):
     """
@@ -57,9 +61,13 @@ def rf(t):
     kappa=cohen_kappa_score(y_test, y_pred1)
     # calculate confusion_matrix
     cnf_matrix = confusion_matrix(y_test, y_pred1,labels=[0,1,2,3,4])
-    return report, cnf_matrix
+    # cross validation part
+    predicted = cross_val_predict(clf1, X,y, cv=10)
+    precision=precision_score(y, predicted,average=None)
+    recall=recall_score(y, predicted,average=None)
+    return report, cnf_matrix, precision, recall
 
-def print_report(report,cnf_matrix):
+def print_report(report,cnf_matrix,precision,recall):
     """ 
     prints the score, the report,the kappa and the matrix
     """
@@ -70,9 +78,18 @@ def print_report(report,cnf_matrix):
     print("\n")
     print("confusion matrix: \n")
     print(cnf_matrix)
-
+    print("\n")
+    print(70*"_")
+    print("\n")
+    print('precision: mean={0:.3f} std={1:.3f}'.format(np.mean(precision),
+                                                       np.std(precision)))
+    print('recall: mean={0:.3f} std={1:.3f}'.format(np.mean(recall),
+                                                    np.std(recall)))
+    print("\n")
+    print(70*"_")
+    
 def main():
-    report,cnf_matrix=rf(2) # change the selected sample data
-    print_report(report,cnf_matrix)
+    report,cnf_matrix,precision,recall=rf(2) # change the selected sample data
+    print_report(report,cnf_matrix,precision,recall)
 
 main()
