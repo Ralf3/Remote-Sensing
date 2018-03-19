@@ -90,7 +90,7 @@ def print_report(report,cnf_matrix,precision,recall):
     print(70*"_")
 
 def main():
-    report,cnf_matrix,precision,recall=log_reg(2) # change the selected sample data
+    report,cnf_matrix,precision,recall=log_reg(1) # change the selected sample data
     print_report(report,cnf_matrix,precision,recall)
 
 main()

@@ -40,7 +40,7 @@ class zbell(object):
         if(crop in self.files):
             self.crop=crop
             self.file=self.files[crop]
-            self.tb=pd.read_excel(self.path+self.file,header=[0,1],sheetname='HYP2')
+            self.tb=pd.read_excel(self.path+self.file,header=[0,1],sheet_name='HYP2')
     def dates(self):
         """ returns the list of dates for the selected crop """
         if(self.tb is None):
@@ -48,12 +48,12 @@ class zbell(object):
         return self.tb.columns.levels[0]
     def select(self,date_ix,wave):
         """ 
-        returns a list of values for a date_ix and an wave
+        returns a list of values for a date_ix and a wave
         the date_ix is the index of the dates from get_dates()
         """
         if(self.tb is not None and wave in self.waves and 
             date_ix in range(len(self.tb.columns.levels[0]))):
-            return self.tb.ix[wave][self.tb.columns.levels[0][date_ix]].values
+            return self.tb.loc[wave][self.tb.columns.levels[0][date_ix]].values
         return None
         
 """ 
