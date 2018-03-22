@@ -28,6 +28,11 @@ from sklearn import svm
 import matplotlib.pyplot as plt
 import gen_sample_all as gs
 
+"""
+precision: How many selected items are relevant? TP(TP+FP)
+recall:    How many relevant items are selected? TP(TP+FN)
+"""
+
 def svm1(t):
     """
     uses t as an index to the list of dates and
@@ -38,7 +43,7 @@ def svm1(t):
     # load data using gen_sample_all
     X,y=gs.gen_data(t)
     # spilt the dataset into training data and test data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     # define a SVM with the parameters C and gamma and
     # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
     classifier = svm.SVC(kernel='rbf', C=1000,gamma=1.0)
