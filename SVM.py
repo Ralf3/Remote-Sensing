@@ -38,7 +38,7 @@ def optimize(t):
     # load data using gen_sample_all
     X,y=gs.gen_data(t)
     # spilt the dataset into training data and test data
-    kfold=StratifiedKFold(n_splits=5,shuffle=True, random_state=7)
+    kfold=StratifiedKFold(n_splits=10,shuffle=True)
     model=svm.SVC()
     C=[1,10,100,500,1000]
     gamma=[0.2,0.5,1.0,2.0,5.0,10.0]
@@ -66,7 +66,10 @@ def svm1(t,best):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     # define a SVM with the parameters C and gamma and
     # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
-    classifier = svm.SVC(kernel=best['kernel'],gamma=best['gamma'],C=best['C'])
+    if(best is None):
+        classifier = svm.SVC(kernel='rbf', C=100,gamma=10.0)
+    else:  
+        classifier = svm.SVC(kernel=best['kernel'],gamma=best['gamma'],C=best['C'])
     # classifier = svm.SVC(kernel='poly', C=100,gamma=10.0)
     y_pred = classifier.fit(X_train, y_train).predict(X_test)
     # compare from score, classification report,cohen kappa, confusion matrix
@@ -112,6 +115,7 @@ def print_report(report,cnf_matrix,precision,recall):
 def main():
     t=3
     best=optimize(t).best_params_
+    best=None
     report,cnf_matrix,precision,recall=svm1(t,best) # change the selected sample data
     print_report(report,cnf_matrix,precision,recall)
     print("\n")
