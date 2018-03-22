@@ -23,7 +23,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import cross_val_predict
 from sklearn import metrics
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn import svm
 import matplotlib.pyplot as plt
 import gen_sample_all as gs
@@ -33,7 +33,27 @@ precision: How many selected items are relevant? TP(TP+FP)
 recall:    How many relevant items are selected? TP(TP+FN)
 """
 
-def svm1(t):
+def optimize(t):
+    """ GridSearchCV """
+    # load data using gen_sample_all
+    X,y=gs.gen_data(t)
+    # spilt the dataset into training data and test data
+    kfold=StratifiedKFold(n_splits=5,shuffle=True, random_state=7)
+    model=svm.SVC()
+    C=[1,10,100,500,1000]
+    gamma=[0.2,0.5,1.0,2.0,5.0,10.0]
+    kernel=['linear', 'poly', 'rbf', 'sigmoid']
+    params={'kernel' : kernel,
+            'C' : C,
+            'gamma' : gamma}
+    print(params)
+    grid=GridSearchCV(model,params,cv=kfold)
+    grid_res=grid.fit(X,y)
+    print("Params:", grid_res.best_params_)
+    return grid_res
+
+
+def svm1(t,best):
     """
     uses t as an index to the list of dates and
     calculates:
@@ -46,7 +66,8 @@ def svm1(t):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     # define a SVM with the parameters C and gamma and
     # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
-    classifier = svm.SVC(kernel='rbf', C=1000,gamma=1.0)
+    classifier = svm.SVC(kernel=best['kernel'],gamma=best['gamma'],C=best['C'])
+    # classifier = svm.SVC(kernel='poly', C=100,gamma=10.0)
     y_pred = classifier.fit(X_train, y_train).predict(X_test)
     # compare from score, classification report,cohen kappa, confusion matrix
     # calculate accuracy_score 
@@ -89,7 +110,9 @@ def print_report(report,cnf_matrix,precision,recall):
     
 
 def main():
-    report,cnf_matrix,precision,recall=svm1(2) # change the selected sample data
+    t=3
+    best=optimize(t).best_params_
+    report,cnf_matrix,precision,recall=svm1(t,best) # change the selected sample data
     print_report(report,cnf_matrix,precision,recall)
     print("\n")
     print(70*"_")
