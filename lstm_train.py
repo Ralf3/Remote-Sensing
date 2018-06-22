@@ -102,7 +102,7 @@ def data_for_training(nr):
     return Xtrain,yt,ytrain
 
 
- """ import layers LSTM and Dense plus Sequential """
+""" import layers LSTM and Dense plus Sequential """
 from keras.layers import LSTM
 from keras.layers import Dense
 # from keras.layers import TimeDistributed
@@ -117,12 +117,12 @@ Xtrain,ytrain,ytest=data_for_training(time_steps-1)
 """ define the model """
 model=Sequential()
 model.add(LSTM(enc_size,return_sequences=True, input_shape=(time_steps,features)))
-model.add(LSTM(enc_size,return_sequences=True))
+#model.add(LSTM(enc_size,return_sequences=True))
 model.add(Dense(enc_size,activation='softmax'))
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 print(model.summary())
 # train the model
-model.fit(Xtrain,ytrain,epochs=500,batch_size=10)
+model.fit(Xtrain[0:70,:,:],ytrain[0:70,:,:],epochs=800,batch_size=10,validation_data=(Xtrain[70:,:,:],ytrain[70:,:,:]))
 res=model.predict(Xtrain)
 res1=[]
 for i in range(res.shape[0]):
