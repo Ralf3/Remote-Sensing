@@ -98,6 +98,8 @@ def data_for_training(nr):
         k+=1
     return Xtrain,yt,ytrain
 
+
+XL,YYY,yL=data_for_training(3) # load all once
 def svm1(t):
     """
     uses t as an index to the list of dates and
@@ -105,12 +107,11 @@ def svm1(t):
     the score, the report, the kappa and the confusion matrix
     it returns the report and the confusion matrix only
     """
+    global XL,yL
     # load data using gen_sample_all
     #X,y=gs.gen_data(t)
     path='/datadisk/pya/Remote-Sensing/'
     
-    #X,y=gs.gen_data(t)
-    XL,YYY,yL=data_for_training(t)
     if(t==0):
         X=XL[:,0,:]
         y=yL[:,0,0]
@@ -126,6 +127,7 @@ def svm1(t):
                 X[i,switch]=p[int(y[i])]
         except:
             print('could not open: S%d.npy' % (t-1))
+    print(y)
     # spilt the dataset into training data and test data
     #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
     X_train=X
@@ -134,7 +136,7 @@ def svm1(t):
     y_test=y
     # define a SVM with the parameters C and gamma and
     # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
-    classifier = svm.SVC(kernel='rbf', C=10,gamma=1.0) # C=1000 is the best
+    classifier = svm.SVC(kernel='rbf', C=100,gamma=1.0) # C=1000 is the best
     y_pred = classifier.fit(X_train, y_train).predict(X_test)
     y_pred1 = classifier.fit(X_train, y_train).predict(X_train)
     # compare from score, classification report,cohen kappa, confusion matrix

@@ -61,7 +61,7 @@ def data_for_training(nr):
         yt[k,0,:]=enc.transform(int(y0[i])).toarray()[0]
         k+=1
     if nr<1:
-        return Xtrain,yt
+        return Xtrain,yt,ytrain
     k=0 
     while(k<size):
         sel=ytrain[k,0,0]
@@ -74,7 +74,7 @@ def data_for_training(nr):
         yt[k,1,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<2:
-        return Xtrain,yt
+        return Xtrain,yt,ytrain
     k=0
     while(k<size):
         sel=ytrain[k,1,0]
@@ -87,7 +87,7 @@ def data_for_training(nr):
         yt[k,2,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<3:
-        return Xtrain,yt
+        return Xtrain,yt,ytrain
     k=0
     while(k<size):
         sel=ytrain[k,2,0]
