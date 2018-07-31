@@ -56,11 +56,11 @@ def rf(t):
                                  y_pred1,
                                  target_names=['class0','class1',
                                                'class2','class3',
-                                               'class4'])
+                                               'class4','class5'])
     # calculate cohen_kappa_score
     kappa=cohen_kappa_score(y_test, y_pred1)
     # calculate confusion_matrix
-    cnf_matrix = confusion_matrix(y_test, y_pred1,labels=[0,1,2,3,4])
+    cnf_matrix = confusion_matrix(y_test, y_pred1,labels=[0,1,2,3,4,5])
     # cross validation part
     predicted = cross_val_predict(clf1, X,y, cv=10)
     precision=precision_score(y, predicted,average=None)
@@ -89,7 +89,7 @@ def print_report(report,cnf_matrix,precision,recall):
     print(70*"_")
     
 def main():
-    report,cnf_matrix,precision,recall=rf(2) # change the selected sample data
+    report,cnf_matrix,precision,recall=rf(0) # change the selected sample data
     print_report(report,cnf_matrix,precision,recall)
 
 main()

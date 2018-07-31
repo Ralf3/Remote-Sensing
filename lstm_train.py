@@ -61,7 +61,7 @@ def data_for_training(nr):
         yt[k,0,:]=enc.transform(int(y0[i])).toarray()[0]
         k+=1
     if nr<1:
-        return Xtrain,yt,ytrain
+        return Xtrain,yt
     k=0 
     while(k<size):
         sel=ytrain[k,0,0]
@@ -74,7 +74,7 @@ def data_for_training(nr):
         yt[k,1,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<2:
-        return Xtrain,yt,ytrain
+        return Xtrain,yt
     k=0
     while(k<size):
         sel=ytrain[k,1,0]
@@ -87,7 +87,7 @@ def data_for_training(nr):
         yt[k,2,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<3:
-        return Xtrain,yt,ytrain
+        return Xtrain,yt
     k=0
     while(k<size):
         sel=ytrain[k,2,0]
@@ -112,17 +112,17 @@ from keras.models import Sequential
 sample=min(X0.shape[0],X1.shape[0],X2.shape[0],X3.shape[0]) # the sample for all
 time_steps=4    # number of steps 
 features=10     # spectral componentes
-enc_size=5      # five dense nodes for each 
+enc_size=6      # five dense nodes for each 
 Xtrain,ytrain,ytest=data_for_training(time_steps-1)
 """ define the model """
 model=Sequential()
 model.add(LSTM(enc_size,return_sequences=True, input_shape=(time_steps,features)))
-#model.add(LSTM(enc_size,return_sequences=True))
+model.add(LSTM(enc_size,return_sequences=True))
 model.add(Dense(enc_size,activation='softmax'))
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 print(model.summary())
 # train the model
-model.fit(Xtrain[0:70,:,:],ytrain[0:70,:,:],epochs=800,batch_size=10,validation_data=(Xtrain[70:,:,:],ytrain[70:,:,:]))
+model.fit(Xtrain[0:70,:,:],ytrain[0:70,:,:],epochs=800,batch_size=10,validation_data=(Xtrain[70:80,:,:], ytrain[70:80,:,:]))
 res=model.predict(Xtrain)
 res1=[]
 for i in range(res.shape[0]):

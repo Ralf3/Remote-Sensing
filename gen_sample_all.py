@@ -18,7 +18,7 @@ class zbell(object):
         Please adapt the path according your needs!
     """
     def __init__(self):
-        self.path='./'
+        self.path='/datadisk/Remote-Sensing/'
         self.files={'ALF':'2002_HYP2_MCA12_4501050_SUPER_ALF.xls',
                     'TRI':'2002_HYP2_MCA12_4501050_SUPER_TRI.xls',
                     'COC':'2002_HYP2_MCA12_4501050_SUPER_COC.xls',
@@ -64,7 +64,7 @@ Some examples are given below
 """
 
 #modell={'WWH':zbell(), 'WPR':zbell(), 'WRY':zbell(), 'SMA':zbell()}
-modell={'WWH':zbell(), 'WPR':zbell(), 'WRY':zbell(), 'SMA':zbell(),'POT':zbell()}
+modell={'WWH':zbell(), 'WPR':zbell(), 'WRY':zbell(), 'SMA':zbell(),'POT':zbell(), 'TRI':zbell()}
 #modell={'WWH':zbell(), 'WPR':zbell(), 'WRY':zbell()}
 
 # load the modell

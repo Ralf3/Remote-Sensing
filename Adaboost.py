@@ -56,11 +56,11 @@ def ada(t):
                                  y_pred,
                                  target_names=['class0','class1',
                                                'class2','class3',
-                                               'class4'])
+                                               'class4','class5'])
     # calculate cohen_kappa_score
     kappa=cohen_kappa_score(y_test, y_pred)
     # calculate confusion_matrix we use a model with 5 classes!
-    cnf_matrix = confusion_matrix(y_test, y_pred,labels=[0,1,2,3,4])
+    cnf_matrix = confusion_matrix(y_test, y_pred,labels=[0,1,2,3,4,5])
     # cross validation part
     predicted = cross_val_predict(clf, X,y, cv=10)
     precision=precision_score(y, predicted,average=None)
@@ -89,7 +89,7 @@ def print_report(report,cnf_matrix,precision,recall):
     print(70*"_")
 
 def main():
-    report,cnf_matrix,precision,recall=ada(2) # change the selected sample data
+    report,cnf_matrix,precision,recall=ada(0) # change the selected sample data
     print_report(report,cnf_matrix,precision,recall)
 
 main()
