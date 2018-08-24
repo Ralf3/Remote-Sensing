@@ -10,10 +10,12 @@ Created on Tue Jun 19 14:58:52 2018
 """ fivenum implementation using numpy """
 
 import numpy as np
-import pylab as plt
+from sklearn.metrics import classification_report
 import sys
-sys.path.append('/datadisk/Remote-Sensing')
+sys.path.append('/home/ralf/pya/Remote-Sensing')
 import gen_sample_all as gen
+import time
+
 
 def sevennum(moons):
     """ help function often useful 
@@ -61,7 +63,7 @@ def data_for_training(nr):
         yt[k,0,:]=enc.transform(int(y0[i])).toarray()[0]
         k+=1
     if nr<1:
-        return Xtrain,yt
+        return Xtrain,yt,ytrain
     k=0 
     while(k<size):
         sel=ytrain[k,0,0]
@@ -74,7 +76,7 @@ def data_for_training(nr):
         yt[k,1,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<2:
-        return Xtrain,yt
+        return Xtrain,yt,ytrain
     k=0
     while(k<size):
         sel=ytrain[k,1,0]
@@ -87,7 +89,7 @@ def data_for_training(nr):
         yt[k,2,:]=enc.transform(int(sel)).toarray()[0]
         k+=1
     if nr<3:
-        return Xtrain,yt
+        return Xtrain,yt, ytrain
     k=0
     while(k<size):
         sel=ytrain[k,2,0]
@@ -111,8 +113,9 @@ from keras.models import Sequential
 """ make the data """
 sample=min(X0.shape[0],X1.shape[0],X2.shape[0],X3.shape[0]) # the sample for all
 time_steps=4    # number of steps 
-features=10     # spectral componentes
-enc_size=6      # five dense nodes for each 
+#features=10     # spectral componentes sentinel2
+features=4      # spectral compoentes planet  
+enc_size=6      # six dense nodes for each 
 Xtrain,ytrain,ytest=data_for_training(time_steps-1)
 """ define the model """
 model=Sequential()
@@ -122,8 +125,10 @@ model.add(Dense(enc_size,activation='softmax'))
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 print(model.summary())
 # train the model
+T0=time.time()
 model.fit(Xtrain[0:70,:,:],ytrain[0:70,:,:],epochs=800,batch_size=10,validation_data=(Xtrain[70:80,:,:], ytrain[70:80,:,:]))
 res=model.predict(Xtrain)
+print('time:',time.time()-T0)
 res1=[]
 for i in range(res.shape[0]):
     res1.append(np.argmax(res[i],axis=1))
@@ -141,8 +146,30 @@ def confusion(pos):
         conf_mat[int(np.argmax(ytrain[i])),int(res1[i][pos])]+=1
     return conf_mat
 
+def code_res(pos):
+    """ uses the global data ytrain and rest to generate the ypred ytrue """
+    ytrue=[]
+    ypred=[]
+    global ytrain,res1
+    time_steps=res1[0].shape[0] # time_steps
+    if(pos<0 or pos>time_steps):
+        return None, None
+    for i in range(ytrain.shape[0]):
+        ytrue.append(int(np.argmax(ytrain[i])))
+        ypred.append(int(res1[i][pos])) 
+    return ytrue, ypred
+        
+        
 print(confusion(0))
 print(confusion(1))
 print(confusion(2))
 print(confusion(3))
+
+for i in range(4):
+    ytrue,ypred=code_res(i)
+    print(classification_report(ytrue,ypred))
+    
+    
+np.mean(X0[y0==0,1])
+np.std(X0[y0==0,1])
 

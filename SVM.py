@@ -67,7 +67,7 @@ def svm1(t,best):
     # define a SVM with the parameters C and gamma and
     # a RBF kernel (try also a  ‘linear’, ‘poly’, ‘sigmoid’)
     if(best is None):
-        classifier = svm.SVC(kernel='rbf', C=100,gamma=10.0)
+        classifier = svm.SVC(kernel='rbf', C=1000,gamma=1.0)
     else:  
         classifier = svm.SVC(kernel=best['kernel'],gamma=best['gamma'],C=best['C'])
     # classifier = svm.SVC(kernel='poly', C=100,gamma=10.0)
@@ -113,7 +113,7 @@ def print_report(report,cnf_matrix,precision,recall):
     
 
 def main():
-    t=0
+    t=2
     best=None
     best=optimize(t).best_params_
     report,cnf_matrix,precision,recall=svm1(t,best) # change the selected sample data

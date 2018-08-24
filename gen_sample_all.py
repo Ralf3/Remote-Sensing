@@ -3,8 +3,6 @@
 # import some Python modules 
 import pandas as pd
 import numpy as np
-import copy
-import sys
 
 """ 
 Reads data from the EXCEL-Sheets for each fruit and generates a sample
@@ -18,7 +16,7 @@ class zbell(object):
         Please adapt the path according your needs!
     """
     def __init__(self):
-        self.path='/datadisk/Remote-Sensing/'
+        self.path='/home/ralf/pya/Remote-Sensing/'
         self.files={'ALF':'2002_HYP2_MCA12_4501050_SUPER_ALF.xls',
                     'TRI':'2002_HYP2_MCA12_4501050_SUPER_TRI.xls',
                     'COC':'2002_HYP2_MCA12_4501050_SUPER_COC.xls',
@@ -30,7 +28,8 @@ class zbell(object):
                     'POT':'2002_HYP2_MCA12_4501050_SUPER_POT.xls',
                     'WWH':'2002_HYP2_MCA12_4501050_SUPER_WWH.xls',
                     'SMA':'2002_HYP2_MCA12_4501050_SUPER_SMA.xls'}
-        self.waves=[490,560,665,705,740,783,842,865,1610,2190]
+        #self.waves=[490,560,665,705,740,783,842,865,1610,2190]
+        self.waves=[490,560,665,865] # waves for planet doves
         self.crop=None
         self.file=None
         self.tb=None
@@ -81,7 +80,8 @@ def gen_data(dix):
     ids=[0,1,2,...] for the used crops
     """
     # define the length of the data according to Sentinel2
-    waves=[490,560,665,705,740,783,842,865,1610,2190]
+    #waves=[490,560,665,705,740,783,842,865,1610,2190]
+    waves=[490,560,665,865] # waves for planet doves
     lx={}
     for key in modell.keys():
         lx[key]=0
@@ -121,6 +121,23 @@ def gen_data(dix):
         data[i]=w[key]
         i+=1
     return data.T,np.array(target)
+
+def gen_equal_size(dix,sz=20):
+    """ make the data equal sized with an size of sz  using doublication """
+    X,y=gen_data(dix)
+    y1=np.zeros(sz*len(np.unique(y)))
+    X1=np.zeros((len(y1),X.shape[1]))
+    # fill the arrays randomly
+    for i in np.unique(y):
+        ys=np.argwhere(y==i).flatten()
+        for j in np.arange(i*sz,(i+1)*sz):
+            rs=np.random.choice(ys)
+            #print(rs)
+            y1[int(j)]=y[int(rs)]
+            X1[int(j),:]=X[int(rs),:]
+    return X1,y1
+    
+        
           
         
     
