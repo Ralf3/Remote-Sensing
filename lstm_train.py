@@ -11,6 +11,7 @@ Created on Tue Jun 19 14:58:52 2018
 
 import numpy as np
 from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 import sys
 sys.path.append('/home/ralf/pya/Remote-Sensing')
 import gen_sample_all as gen
@@ -60,7 +61,7 @@ def data_for_training(nr):
         i=np.random.randint(0,y0.shape[0])
         Xtrain[k,0,:]=X0[i,:]
         ytrain[k,0]=y0[i] # for example wheat
-        yt[k,0,:]=enc.transform(int(y0[i])).toarray()[0]
+        yt[k,0,:]=enc.transform([[int(y0[i])]]).toarray()[0]
         k+=1
     if nr<1:
         return Xtrain,yt,ytrain
@@ -73,7 +74,7 @@ def data_for_training(nr):
             i=np.random.randint(0,y1.shape[0])
         Xtrain[k,1,:]=X1[i,:]
         ytrain[k,1]=sel
-        yt[k,1,:]=enc.transform(int(sel)).toarray()[0]
+        yt[k,1,:]=enc.transform([[int(sel)]]).toarray()[0]
         k+=1
     if nr<2:
         return Xtrain,yt,ytrain
@@ -86,7 +87,7 @@ def data_for_training(nr):
             i=np.random.randint(0,y2.shape[0])
         Xtrain[k,2,:]=X2[i,:]
         ytrain[k,2]=sel
-        yt[k,2,:]=enc.transform(int(sel)).toarray()[0]
+        yt[k,2,:]=enc.transform([[int(sel)]]).toarray()[0]
         k+=1
     if nr<3:
         return Xtrain,yt, ytrain
@@ -99,7 +100,7 @@ def data_for_training(nr):
             i=np.random.randint(0,y3.shape[0])
         Xtrain[k,3,:]=X3[i,:]
         ytrain[k,3]=sel
-        yt[k,3,:]=enc.transform(int(sel)).toarray()[0]
+        yt[k,3,:]=enc.transform([[int(sel)]]).toarray()[0]
         k+=1
     return Xtrain,yt,ytrain
 
